@@ -36,7 +36,7 @@ Before using these scripts, ensure the following:
    - GatewayPorts 
       - When using `push-local-port.sh`, to make the pushed port accessible from other hosts:
          - Set the following in `/etc/ssh/sshd_config`:
-            - `GatewayPorts yes`
+            - `GatewayPorts clientspecified`
          - Then restart `sshd` on the remote host.
 
 ## `push-local-port.sh`
@@ -53,10 +53,12 @@ When you need to:
 ### Usage
 
 ```
-sh push-local-port.sh -l <local_port> -r <remote_port> [-p <ssh_port>] -u <user> -h <host>
+sh push-local-port.sh -l <local_port> -r <remote_port> [-p <ssh_port>] -u <user> -h <host> [-x]
 ```
 
 > The optional `-p <ssh_port>` lets you specify a custom SSH port (default is 22).
+> 
+> `-x` opens the remote port on localhost only. Use this if you want the forwarded port accessible only from the host itself, not the network.
 
 ### Example
 
@@ -66,6 +68,9 @@ sh push-local-port.sh -l 3000 -r 3001 -u dev -h dev.example.com
 
 # If SSH is running on port 2222:
 sh push-local-port.sh -l 3000 -r 3001 -p 2222 -u dev -h dev.example.com 
+
+# Only allow access from the host's own localhost:
+sh push-local-port.sh -l 3000 -r 3001 -p 2222 -u dev -h dev.example.com -x
 ```
 
 ## `pull-remote-port.sh`
